@@ -1,4 +1,4 @@
-package com.catalog.products.domain;
+package com.catalog.products.domains;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,14 +18,21 @@ public class Product implements Serializable{
 	private String description;
 	private BigDecimal price;
 	
+	public Product() {}
+	
 	public Product(String id, String name, String description, BigDecimal price) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
 	}
 	
+	public Product(String name, String description, BigDecimal price) {
+		this.name = name;
+		this.description = description;
+		this.price = price;
+	}
+
 	public String getId() {
 		return id;
 	}
