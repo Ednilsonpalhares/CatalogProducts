@@ -1,68 +1,47 @@
 package com.catalog.products.dto;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
+import com.catalog.products.model.Product;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 
-import com.catalog.products.domains.Product;
-
+@Getter
+@Setter
+@NoArgsConstructor
 public class ProductDTO implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
 	private String id;
 	
-	@NotBlank(message = "campo vazio")
+	@NotBlank
 	private String name;
 	@NotBlank
 	private String description;
 
 	@NotNull
 	@Positive
-	@Digits(integer=2, fraction=2)
-	private BigDecimal price;
-	
-	public ProductDTO() {}
+	@Digits(integer = 2, fraction = 2)
+	private Double price;
 
-	public ProductDTO(Product product) {
-		this.id = product.getId();
-		this.name = product.getName();
-		this.description = product.getDescription();
-		this.price = product.getPrice();
-	}
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
+	public ProductDTO(String id, String name, String description, Double price) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public BigDecimal getPrice() {
-		return price;
-	}
-
-	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	public static ProductDTO toProductDTO(Product product){
+		return new ProductDTO(product.getId(), product.getName(), product.getDescription(), product.getPrice());
+	}
+
+	public static Product toProduct(ProductDTO productDTO){
+		return new Product(productDTO.getId(), productDTO.getName(), productDTO.getDescription(), productDTO.getPrice());
 	}
 }
