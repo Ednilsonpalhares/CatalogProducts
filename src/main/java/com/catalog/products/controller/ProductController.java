@@ -3,6 +3,8 @@ package com.catalog.products.controller;
 import com.catalog.products.dto.ProductDTO;
 import com.catalog.products.model.Product;
 import com.catalog.products.service.ProductService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Api(value = "API REST Products Catalog")
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -20,6 +23,7 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
+	@ApiOperation(value = "Cadastre product")
 	@PostMapping
 	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDto) {
 		Product product = productService.insert(ProductDTO.toProduct(productDto));
@@ -27,6 +31,7 @@ public class ProductController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(ProductDTO.toProductDTO(product));
 	}
 
+	@ApiOperation(value = "Update product")
 	@PutMapping("/{id}")
 	public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDto, @PathVariable String id) {
 		productDto.setId(id);
@@ -35,6 +40,7 @@ public class ProductController {
 		return ResponseEntity.ok().body(ProductDTO.toProductDTO(product));
 	}
 
+	@ApiOperation(value = "View product")
 	@GetMapping("/{id}")
 	public ResponseEntity<ProductDTO> findById(@PathVariable String id) {
 		Product product = this.productService.findById(id);
@@ -42,16 +48,18 @@ public class ProductController {
 		return ResponseEntity.ok().body(ProductDTO.toProductDTO(product));
 	}
 
+	@ApiOperation(value = "List products")
 	@GetMapping
 	public ResponseEntity<List<ProductDTO>> findAll() {
 		List<ProductDTO> productsDto = productService.findAll()
 												     .stream()
 												     .map(product -> ProductDTO.toProductDTO(product))
 												     .collect(Collectors.toList());
-		
+
 		return ResponseEntity.ok().body(productsDto);
 	}
 
+	@ApiOperation(value = "Search product")
 	@GetMapping(value = "/search")
 	public ResponseEntity<List<ProductDTO>> search(
 			@RequestParam(required = false, value = "q") String nameOrDescription,
@@ -65,14 +73,16 @@ public class ProductController {
 
 		return ResponseEntity.ok().body(productsDto);
 	}
-	
+
+	@ApiOperation(value = "Delete product")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable String id) {
 		this.productService.delete(id);
-		 
+
 		return ResponseEntity.ok().build();
 	}
 
+	@ApiOperation(value = "Page product")
 	@GetMapping(value = "/page")
 	public ResponseEntity<Page<ProductDTO>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
