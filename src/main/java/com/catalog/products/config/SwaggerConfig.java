@@ -1,45 +1,27 @@
 package com.catalog.products.config;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.VendorExtension;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import java.util.ArrayList;
 
 @Configuration
-@EnableSwagger2
+@RequiredArgsConstructor
 public class SwaggerConfig {
 
     @Bean
-    public Docket swagger() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.catalog.products"))
-                .paths(PathSelectors.regex("/products.*"))
-                .build()
-                .apiInfo(metaInfo());
+    public OpenAPI swagger() {
+        return new OpenAPI()
+                .info(metaInfo());
     }
 
-    private ApiInfo metaInfo() {
-
-        ApiInfo apiInfo = new ApiInfo(
-                "Products Catalog API REST",
-                "API REST of products catalog",
-                "1.0",
-                "Terms of Service",
-                new Contact("Ednilson", "https://github.com/Ednilsonpalhares",
-                        "ednilsonpalhares.@hotmail.com"),
-                "Apache License Version 2.0",
-                "https://www.apache.org/licesen.html", new ArrayList<VendorExtension>()
-        );
-
-        return apiInfo;
+    private Info metaInfo() {
+        return new Info()
+                .title("Products Catalog API REST")
+                .description("API REST of products catalog")
+                .version("1.0")
+                .termsOfService("Terms of Service Ednilson, https://github.com/Ednilsonpalhares," +
+                                "ednilsonpalhares.@hotmail.com ");
     }
 }
