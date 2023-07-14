@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Getter
@@ -15,7 +16,8 @@ import java.io.Serializable;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class ProductDTO implements Serializable{
-	
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	private String id;
