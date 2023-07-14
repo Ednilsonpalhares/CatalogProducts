@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @DataMongoTest
 @ActiveProfiles("test")
-@PropertySource("classpath:application-test.properties")
+@PropertySource("classpath:application-test.yml")
 public class ProductRepositoryTest {
 
     @Autowired
