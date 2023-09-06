@@ -1,21 +1,26 @@
 package com.catalog.products.service;
 
+import com.catalog.products.config.Author;
 import com.catalog.products.model.Product;
 import com.catalog.products.repository.ProductRepository;
 import com.catalog.products.service.exceptions.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.javers.core.Javers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 	
-	@Autowired
-	private ProductRepository productRepository;
+	private final ProductRepository productRepository;
+	private final Javers javers;
+
 
 	public List<Product> findAll() {
 		return this.productRepository.findAll();
@@ -24,18 +29,19 @@ public class ProductService {
 	public Product findById(String id) {
 		return this.productRepository
 				   .findById(id)
-				   .orElseThrow(() -> new ObjectNotFoundException());
+				   .orElseThrow(ObjectNotFoundException::new);
 	}
 
+	@Transactional
 	public Product insert(Product product) {
 		product.setId(null);
-
+		Author.getInstance().setIdentifier("jose");
 		return this.productRepository.save(product);
 	}
 
 	public Product update(Product product) {
 		findById(product.getId());
-
+		javers.commit("jose2", product);
 		return this.productRepository.save(product);
 	}
 

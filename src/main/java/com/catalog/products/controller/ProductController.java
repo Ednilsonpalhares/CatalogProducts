@@ -30,7 +30,6 @@ public class ProductController {
 	@PostMapping
 	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDto) {
 		Product product = productService.insert(productMapper.toProduct(productDto));
-
 		return ResponseEntity.status(HttpStatus.CREATED).body(productMapper.toProductDTO(product));
 	}
 
